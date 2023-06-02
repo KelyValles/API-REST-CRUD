@@ -36,6 +36,19 @@ namespace API.Services
             return await Collection.FindAsync(new BsonDocument { { "_id", new ObjectId(id) } }).Result.FirstAsync();
         }
 
+        public async Task<Car> GetCarParameters(string id, string category)
+        {
+            var filter = Builders<Car>.Filter.Eq("_id", new ObjectId(id));
+            var car = await Collection.FindAsync(filter).Result.FirstAsync();
+
+            if (car != null)
+            {
+                car.Category = category;
+            }
+
+            return car;
+        }
+
         public async Task InsertCar(Car car)
         {
             await Collection.InsertOneAsync(car);

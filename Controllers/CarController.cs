@@ -29,6 +29,14 @@ namespace API.Controllers
             return Ok(await carCollection.GetCarById(id));
         }
 
+        [HttpGet("{id}/{Category}")]
+        public async Task<IActionResult> GetCarParameters(string id, string Category)
+        {
+            return Ok(await carCollection.GetCarParameters(id, Category));
+        }
+
+
+
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromBody]Car car)
         {

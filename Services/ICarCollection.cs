@@ -10,6 +10,9 @@ namespace API.Services
         Task<List<Car>> GetAllCars();
         Task<Car> GetCarById(string id);
 
+        Task<Car> GetCarParameters(string id, string Category);
+
+
 
     }
 }
