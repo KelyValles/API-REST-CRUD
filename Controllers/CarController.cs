@@ -29,10 +29,10 @@ namespace API.Controllers
             return Ok(await carCollection.GetCarById(id));
         }
 
-        [HttpGet("{id}/{Category}")]
-        public async Task<IActionResult> GetCarParameters(string id, string Category)
+        [HttpGet("{Category}/{Brand}")]
+        public async Task<IActionResult> GetCarParameters(string Category, string Brand)
         {
-            return Ok(await carCollection.GetCarParameters(id, Category));
+            return Ok(await carCollection.GetCarParameters(Category, Brand));
         }
 
 

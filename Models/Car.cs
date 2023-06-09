@@ -21,5 +21,9 @@ namespace API.Models
         [BsonElement("model")]
         public string Model { get; set; }
 
+
+        [BsonElement("color")]
+        public string Color { get; set; }
+
     }
 }

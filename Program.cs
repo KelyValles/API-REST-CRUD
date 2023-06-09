@@ -1,11 +1,18 @@
 using API.Models;
 using API.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<CarSettings>
+    (builder.Configuration.GetSection(nameof(CarSettings)));
+
+builder.Services.AddSingleton<ICarSettings>
+    (d => d.GetRequiredService<IOptions<CarSettings>>().Value);
+
 
 builder.Services.AddScoped<ICarCollection, CarCollection>();
 

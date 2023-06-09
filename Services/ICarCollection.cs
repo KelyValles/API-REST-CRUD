@@ -9,8 +9,7 @@ namespace API.Services
         Task DeleteCar(string id);
         Task<List<Car>> GetAllCars();
         Task<Car> GetCarById(string id);
-
-        Task<Car> GetCarParameters(string id, string Category);
+        Task<List<Car>> GetCarParameters(string Category, string Brand);
 
 
 

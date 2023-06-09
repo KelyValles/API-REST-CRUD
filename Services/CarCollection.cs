@@ -7,17 +7,17 @@ namespace API.Services
 {
     public class CarCollection : ICarCollection
     {
-        //agregar repositorio,acceder a la db
-        internal MongoDBRepository _repository = new MongoDBRepository();
-
-
-        //add collection 
+        
+        //here
         private IMongoCollection<Car> Collection;
-
-        public CarCollection()
+        public CarCollection(ICarSettings settings)
         {
-            Collection = _repository.db.GetCollection<Car>("car");
+            var cliente = new MongoClient(settings.Server);
+            var database = cliente.GetDatabase(settings.Database);
+            Collection = database.GetCollection<Car>(settings.Collection);
         }
+
+        //here
 
         public async Task DeleteCar(string id)
         {
@@ -36,17 +36,17 @@ namespace API.Services
             return await Collection.FindAsync(new BsonDocument { { "_id", new ObjectId(id) } }).Result.FirstAsync();
         }
 
-        public async Task<Car> GetCarParameters(string id, string category)
+        public async Task<List<Car>> GetCarParameters(string category, string brand)
         {
-            var filter = Builders<Car>.Filter.Eq("_id", new ObjectId(id));
-            var car = await Collection.FindAsync(filter).Result.FirstAsync();
+            var filter = Builders<Car>.Filter.And(
+                Builders<Car>.Filter.Eq("Category", category),
+                Builders<Car>.Filter.Eq("Brand", brand)
+            );
 
-            if (car != null)
-            {
-                car.Category = category;
-            }
+            var cars = await Collection.Find(filter).ToListAsync();
 
-            return car;
+            return cars;
+            
         }
 
         public async Task InsertCar(Car car)
