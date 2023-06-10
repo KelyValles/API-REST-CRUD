@@ -1,8 +1,6 @@
 ﻿using API.Models;
 using API.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 
 namespace API.Controllers
 {
@@ -10,22 +8,28 @@ namespace API.Controllers
     [ApiController]
     public class CarController : ControllerBase
     {
-        
+
         ICarCollection carCollection;
-        public CarController(ICarCollection carcollection) 
+        public CarController(ICarCollection carcollection)
         {
             carCollection = carcollection;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllCars()
         {
             return Ok(await carCollection.GetAllCars());
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCarDetail(string id)
+        public async Task<IActionResult> GetCarById(string id)
         {
+            bool exists = await carCollection.Exists(id);
+            if (!exists)
+            {
+                return NotFound("ID doesn't exist in the database");
+            }
+
             return Ok(await carCollection.GetCarById(id));
         }
 
@@ -38,43 +42,39 @@ namespace API.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody]Car car)
+        public async Task<IActionResult> CreateCar([FromBody] Car car)
         {
-            if (car == null)
-             return BadRequest();
-             
-            if (car.Category == string.Empty)
-            {
-                ModelState.AddModelError("Category", "The field shouldn´t be empty");
-            }
-
-            await carCollection.InsertCar(car);
+            await carCollection.CreateCar(car);
             return Created("Created", true);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct([FromBody] Car car, string id)
+        public async Task<IActionResult> UpdateCar([FromBody] Car car, string id)
         {
-            if (car == null)
-                return BadRequest();
-
-            if (car.Category == string.Empty)
+            bool exists = await carCollection.Exists(id);
+            if (!exists)
             {
-                ModelState.AddModelError("Category", "The car shouldn´t be empty");
+                return NotFound("ID doesn't exist in the database");
             }
 
             car.Id = new MongoDB.Bson.ObjectId(id);
             await carCollection.UpdateCar(car);
 
-            return Created("Updated", true);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCar(string id)
         {
+            bool exists = await carCollection.Exists(id);
+            if (!exists)
+            {
+                return NotFound("ID doesn't exist in the database");
+            }
+
             await carCollection.DeleteCar(id);
-            return NoContent(); 
+            return NoContent();
         }
-        
+
     }
 }

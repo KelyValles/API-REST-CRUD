@@ -1,5 +1,4 @@
 ﻿using API.Models;
-using Microsoft.VisualBasic;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -7,17 +6,16 @@ namespace API.Services
 {
     public class CarCollection : ICarCollection
     {
-        
-        //here
+
+
         private IMongoCollection<Car> Collection;
-        public CarCollection(ICarSettings settings)
+        public CarCollection(ISettings settings)
         {
             var cliente = new MongoClient(settings.Server);
             var database = cliente.GetDatabase(settings.Database);
-            Collection = database.GetCollection<Car>(settings.Collection);
+            Collection = database.GetCollection<Car>(settings.Collection.Car);
         }
 
-        //here
 
         public async Task DeleteCar(string id)
         {
@@ -46,10 +44,10 @@ namespace API.Services
             var cars = await Collection.Find(filter).ToListAsync();
 
             return cars;
-            
+
         }
 
-        public async Task InsertCar(Car car)
+        public async Task CreateCar(Car car)
         {
             await Collection.InsertOneAsync(car);
         }
@@ -57,7 +55,14 @@ namespace API.Services
         public async Task UpdateCar(Car car)
         {
             var filter = Builders<Car>.Filter.Eq(s => s.Id, car.Id);
-            await Collection.ReplaceOneAsync(filter, car);  
+            await Collection.ReplaceOneAsync(filter, car);
+        }
+
+        public async Task<bool> Exists(string id)
+        {
+            var filter = Builders<Car>.Filter.Eq(s => s.Id, new ObjectId(id));
+            var count = await Collection.CountDocumentsAsync(filter);
+            return count > 0;
         }
     }
 }
