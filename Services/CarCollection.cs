@@ -11,8 +11,8 @@ namespace API.Services
         private IMongoCollection<Car> Collection;
         public CarCollection(ISettings settings)
         {
-            var cliente = new MongoClient(settings.Server);
-            var database = cliente.GetDatabase(settings.Database);
+            var client = new MongoClient(settings.Server);
+            var database = client.GetDatabase(settings.Database);
             Collection = database.GetCollection<Car>(settings.Collection.Car);
         }
 

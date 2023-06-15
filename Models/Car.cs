@@ -13,6 +13,7 @@ namespace API.Models
 
         [BsonElement("category")]
         [Required(ErrorMessage = "Category is required")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "The Category must be between 2 and 50 characters long")]
         public string Category { get; set; }
 
 
@@ -27,7 +28,16 @@ namespace API.Models
 
 
         [BsonElement("color")]
+        [Required(ErrorMessage = "Color is required")]
         public string Color { get; set; }
+
+        [BsonElement("launchyear")]
+        [Required(ErrorMessage = "LaunchYear is required")]
+        public DateOnly LaunchYear { get; set; }
+
+        [BsonElement("enginetype")]
+        [Required(ErrorMessage = "EngineType is required")]
+        public string EngineType { get; set; }
 
     }
 }

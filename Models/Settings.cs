@@ -8,7 +8,7 @@
         public CollectionSettings Collection { get; set; }
     }
 
-    public class CollectionSettings 
+    public class CollectionSettings
     {
         public string Car { get; set; }
         public string Categories { get; set; }

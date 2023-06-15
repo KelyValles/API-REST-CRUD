@@ -10,8 +10,8 @@ namespace API.Services
 
         public CategoriesCollection(ISettings settings)
         {
-            var cliente = new MongoClient(settings.Server);
-            var database = cliente.GetDatabase(settings.Database);
+            var client = new MongoClient(settings.Server);
+            var database = client.GetDatabase(settings.Database);
             Collection = database.GetCollection<Categories>(settings.Collection.Categories);
         }
 
@@ -31,7 +31,7 @@ namespace API.Services
             return await Collection.FindAsync(new BsonDocument { { "_id", new ObjectId(id) } }).Result.FirstAsync();
         }
 
-        
+
 
         public async Task CreateCategories(Categories categories)
         {
