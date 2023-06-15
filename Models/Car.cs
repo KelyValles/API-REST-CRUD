@@ -13,6 +13,7 @@ namespace API.Models
 
         [BsonElement("category")]
         [Required(ErrorMessage = "Category is required")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "The Category must be between 2 and 50 characters long")]
         public string Category { get; set; }
 
 

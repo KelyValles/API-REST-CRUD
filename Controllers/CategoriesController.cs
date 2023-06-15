@@ -1,7 +1,6 @@
 ﻿using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 
 namespace API.Controllers
 {
@@ -17,7 +16,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllCategories()
         {
             return Ok(await categoriesCollection.GetAllCategories());
         }
@@ -54,12 +53,12 @@ namespace API.Controllers
             categories.Id = new MongoDB.Bson.ObjectId(id);
             await categoriesCollection.UpdateCategories(categories);
 
-            
+
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCar(string id)
+        public async Task<IActionResult> DeleteCategories(string id)
         {
             bool exists = await categoriesCollection.Exists(id);
             if (!exists)
@@ -71,6 +70,6 @@ namespace API.Controllers
             return NoContent();
         }
 
-        
+
     }
 }
