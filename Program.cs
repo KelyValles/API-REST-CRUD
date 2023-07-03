@@ -1,13 +1,19 @@
 using API.Models;
 using API.Services;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<Settings>
+    (builder.Configuration.GetSection(nameof(Settings)));
+
+builder.Services.AddScoped<ISettings>
+    (d => d.GetRequiredService<IOptions<Settings>>().Value);
+
 
 builder.Services.AddScoped<ICarCollection, CarCollection>();
+builder.Services.AddScoped<ICategoriesCollection, CategoriesCollection>();
 
 builder.Services.AddControllers();
 

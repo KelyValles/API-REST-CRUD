@@ -1,5 +1,4 @@
 ﻿using API.Models;
-using Microsoft.VisualBasic;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -7,17 +6,16 @@ namespace API.Services
 {
     public class CarCollection : ICarCollection
     {
-        //agregar repositorio,acceder a la db
-        internal MongoDBRepository _repository = new MongoDBRepository();
 
 
-        //add collection 
         private IMongoCollection<Car> Collection;
-
-        public CarCollection()
+        public CarCollection(ISettings settings)
         {
-            Collection = _repository.db.GetCollection<Car>("car");
+            var client = new MongoClient(settings.Server);
+            var database = client.GetDatabase(settings.Database);
+            Collection = database.GetCollection<Car>(settings.Collection.Car);
         }
+
 
         public async Task DeleteCar(string id)
         {
@@ -36,7 +34,20 @@ namespace API.Services
             return await Collection.FindAsync(new BsonDocument { { "_id", new ObjectId(id) } }).Result.FirstAsync();
         }
 
-        public async Task InsertCar(Car car)
+        public async Task<List<Car>> GetCarParameters(string category, string brand)
+        {
+            var filter = Builders<Car>.Filter.And(
+                Builders<Car>.Filter.Eq("Category", category),
+                Builders<Car>.Filter.Eq("Brand", brand)
+            );
+
+            var cars = await Collection.Find(filter).ToListAsync();
+
+            return cars;
+
+        }
+
+        public async Task CreateCar(Car car)
         {
             await Collection.InsertOneAsync(car);
         }
@@ -44,7 +55,14 @@ namespace API.Services
         public async Task UpdateCar(Car car)
         {
             var filter = Builders<Car>.Filter.Eq(s => s.Id, car.Id);
-            await Collection.ReplaceOneAsync(filter, car);  
+            await Collection.ReplaceOneAsync(filter, car);
+        }
+
+        public async Task<bool> Exists(string id)
+        {
+            var filter = Builders<Car>.Filter.Eq(s => s.Id, new ObjectId(id));
+            var count = await Collection.CountDocumentsAsync(filter);
+            return count > 0;
         }
     }
 }
