@@ -3,8 +3,8 @@ import { Button, Table } from "reactstrap";
 import PropTypes from 'prop-types';
 
 
-const DataTable = ({ data, setActualizar, mostrarModal, setmostrarModal, eliminarCar }) => {
-    DataTable.propTypes = {
+const CarTable = ({ data, setActualizar, mostrarModal, setmostrarModal, eliminarCar }) => {
+    CarTable.propTypes = {
         data: PropTypes.arrayOf(
             PropTypes.shape({
                 category: PropTypes.string.isRequired,
@@ -76,4 +76,4 @@ const DataTable = ({ data, setActualizar, mostrarModal, setmostrarModal, elimina
 
     )
 }
-export default DataTable;
+export default CarTable;

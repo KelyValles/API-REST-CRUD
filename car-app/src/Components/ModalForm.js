@@ -15,7 +15,7 @@ const ModalForm = ({ mostrarModal, setmostrarModal, guardarCar, actualizar, setA
         mostrarModal: PropTypes.bool,
         setmostrarModal: PropTypes.func,
         guardarCar: PropTypes.func,
-        actualizar: PropTypes.func,
+        actualizar: PropTypes.object,
         setActualizar: PropTypes.func,
         actualizarCar: PropTypes.func,
 

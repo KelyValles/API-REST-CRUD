@@ -1,5 +1,5 @@
 ﻿import { Container, Row, Col, Card, CardHeader, CardBody, Button } from "reactstrap"
-import DataTable from './DataTable';
+import CarTable from './CarTable';
 import React, { useEffect, useState } from 'react';
 import ModalForm from './ModalForm';
 
@@ -13,6 +13,7 @@ function Car() {
         if (response.ok) {
             const data = await response.json();
             setCar(data);
+            console.log("mostrar", data);
         } else {
             console.log("Error en la petición listado carros")
         }
@@ -37,6 +38,7 @@ function Car() {
     }
 
     const actualizarCar = async (car) => {
+        const { id, ...carData } = car; // Desestructurar el campo `id` del objeto `car`
         console.log("here",car);
         const url = `https://localhost:7121/api/Car/${car.id}`; 
         const response = await fetch(url, {
@@ -44,7 +46,7 @@ function Car() {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify(car)
+            body: JSON.stringify(carData)
             
         });
         
@@ -83,7 +85,7 @@ function Car() {
                                 onClick={() => setmostrarModal(!mostrarModal)}
                             >Nuevo Carro</Button>
                             <hr></hr>
-                            <DataTable data={car}
+                            <CarTable data={car}
                                 setActualizar={setActualizar}
                                 mostrarModal={mostrarModal}
                                 setmostrarModal={setmostrarModal}
