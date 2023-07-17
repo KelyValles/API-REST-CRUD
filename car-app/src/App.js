@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.css';
+锘縤mport 'bootstrap/dist/css/bootstrap.css';
 import React, { useState } from 'react';
 import { Nav, NavItem, NavLink } from "reactstrap";
 import './App.css';
@@ -26,13 +26,29 @@ function App() {
                       setMostrarCar(false); 
                       setMostrarCategory(true);
                   }}>
-                      Modelo Categor韆s
+                      Modelo Categor铆as
                   </NavLink>
               </NavItem>
           </Nav>
           {mostrarCar && <Car />} {/* Mostrar el componente Car cuando mostrarCar sea true */}
-          {mostrarCategory && <Category /> }
-    </div>
+          {mostrarCategory && <Category />}
+          <div>
+              <h1>Hola!</h1>
+              <p>Bienvenido a su nueva aplicaci贸n, construida con:</p>
+              <ul>
+                  <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> para c贸digo del lado del servidor multiplataforma</li>
+                  <li><a href='https://facebook.github.io/react/'>React</a> para el c贸digo del lado del cliente</li>
+                  <li><a href='http://getbootstrap.com/'>Bootstrap</a> para maquetaci贸n y estilo</li>
+              </ul>
+              
+              <ul>
+                  <li><a href='https://github.com/KelyValles/API.git'>Github</a> C贸digo fuente</li>
+
+              </ul>
+              
+          </div>
+      </div>
+
   );
 }
 
