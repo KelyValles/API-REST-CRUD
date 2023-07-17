@@ -10,8 +10,8 @@ const modeloCar = {
     engineType: ""
 }
 
-const ModalForm = ({ mostrarModal, setmostrarModal, guardarCar, actualizar, setActualizar, actualizarCar }) => {
-    ModalForm.propTypes = {
+const ModalCar = ({ mostrarModal, setmostrarModal, guardarCar, actualizar, setActualizar, actualizarCar }) => {
+    ModalCar.propTypes = {
         mostrarModal: PropTypes.bool,
         setmostrarModal: PropTypes.func,
         guardarCar: PropTypes.func,
@@ -39,6 +39,7 @@ const ModalForm = ({ mostrarModal, setmostrarModal, guardarCar, actualizar, setA
 
         if (car.id == null) {
             guardarCar(car)
+            setCar(modeloCar)
         } else {
             actualizarCar(car)
             console.log('++', actualizarCar)
@@ -101,4 +102,4 @@ const ModalForm = ({ mostrarModal, setmostrarModal, guardarCar, actualizar, setA
     )
 }
 
-export default ModalForm;
+export default ModalCar;

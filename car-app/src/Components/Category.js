@@ -1,18 +1,18 @@
 ﻿import { Container, Row, Col, Card, CardHeader, CardBody, Button } from "reactstrap"
-import CarTable from './CarTable';
+import CategoryTable from './CategoryTable';
 import React, { useEffect, useState } from 'react';
-import ModalCar from './ModalCar';
+import ModalCategory from './ModalCategory';
 
-function Car() {
-    const [car, setCar] = useState([]);
+function Category() {
+    const [category, setCategory] = useState([]);
     const [mostrarModal, setmostrarModal] = useState(false);
     const [actualizar, setActualizar] = useState(null);
 
-    const mostrarCar = async () => {
-        const response = await fetch("https://localhost:7121/api/Car");
+    const mostrarCategory = async () => {
+        const response = await fetch("https://localhost:7121/api/Categories");
         if (response.ok) {
             const data = await response.json();
-            setCar(data);
+            setCategory(data);
             console.log("mostrar", data);
         } else {
             console.log("Error en la petición listado carros")
@@ -20,54 +20,54 @@ function Car() {
     }
 
     useEffect(() => {
-        mostrarCar()
-    },[])
+        mostrarCategory()
+    }, [])
 
-    const guardarCar = async (car) => {
-        const response = await fetch('https://localhost:7121/api/Car', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(car)
+    const guardarCategory = async (category) => {
+        const response = await fetch('https://localhost:7121/api/Categories', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(category)
         })
         if (response.ok) {
             setmostrarModal(!mostrarModal);
-            mostrarCar();
+            mostrarCategory();
         }
     }
 
-    const actualizarCar = async (car) => {
-        const { id, ...carData } = car; // Desestructurar el campo `id` del objeto `car`
-        console.log("here",car);
-        const url = `https://localhost:7121/api/Car/${car.id}`; 
+    const actualizarCategory = async (category) => {
+        const { id, ...categoryData } = category; // Desestructurar el campo `id` del objeto `car`
+        console.log("here", category);
+        const url = `https://localhost:7121/api/Categories/${category.id}`;
         const response = await fetch(url, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify(carData)
-            
+            body: JSON.stringify(categoryData)
+
         });
-        
+
         if (response.ok) {
             setmostrarModal(!mostrarModal);
-            mostrarCar();
+            mostrarCategory();
         }
     }
 
-    const eliminarCar = async (id) => {
+    const eliminarCategory = async (id) => {
 
-        var respuesta = window.confirm("¿Desea eliminar el carro?")
+        var respuesta = window.confirm("¿Desea eliminar la categoría?")
         if (!respuesta) {
             return;
         }
-        const url = `https://localhost:7121/api/Car/${id}`;
+        const url = `https://localhost:7121/api/Categories/${id}`;
         const response = await fetch(url, {
             method: 'DELETE'
         });
         if (response.ok) {
-            mostrarCar();
+            mostrarCategory();
         }
     }
     return (
@@ -77,35 +77,35 @@ function Car() {
                     <Card>
 
                         <CardHeader>
-                            <h5>Listado de Carros</h5>
+                            <h5>Listado de Categorías</h5>
                         </CardHeader>
                         <CardBody>
 
                             <Button size="sm" color="success"
                                 onClick={() => setmostrarModal(!mostrarModal)}
-                            >Nuevo Carro</Button>
+                            >Registrar Categoría</Button>
                             <hr></hr>
-                            <CarTable data={car}
+                            <CategoryTable data={category}
                                 setActualizar={setActualizar}
                                 mostrarModal={mostrarModal}
                                 setmostrarModal={setmostrarModal}
 
-                                eliminarCar={eliminarCar}
+                                eliminarCategory={eliminarCategory}
                             />
                         </CardBody>
                     </Card>
                 </Col>
             </Row>
-            <ModalCar
+            <ModalCategory
                 mostrarModal={mostrarModal}
                 setmostrarModal={setmostrarModal}
-                guardarCar={guardarCar}
+                guardarCategory={guardarCategory}
 
                 actualizar={actualizar}
                 setActualizar={setActualizar}
-                actualizarCar={actualizarCar}
+                actualizarCategory={actualizarCategory}
             />
         </Container>
     )
 }
-export default Car;
+export default Category;
