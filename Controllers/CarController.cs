@@ -1,6 +1,7 @@
 ﻿using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 
 namespace API.Controllers
 {
@@ -20,7 +21,29 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCars()
         {
-            return Ok(await carCollection.GetAllCars());
+            var cars = await carCollection.GetAllCars();
+
+            var carsWithUniqueId = cars.Select(car => new
+            {
+                Id = GetObjectIdAsString(car.Id),
+                car.Category,
+                car.Brand,
+                car.Model,
+                car.Color,
+                car.EngineType
+            });
+
+            return Ok(carsWithUniqueId);
+        }
+
+        private string GetObjectIdAsString(object id)
+        {
+            if (id is ObjectId objectId)
+            {
+                return objectId.ToString();
+            }
+
+            return string.Empty; // O cualquier valor por defecto que desees
         }
 
         [HttpGet("{id}")]

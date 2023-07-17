@@ -31,9 +31,7 @@ namespace API.Models
         [Required(ErrorMessage = "Color is required")]
         public string Color { get; set; }
 
-        [BsonElement("launchyear")]
-        [Required(ErrorMessage = "LaunchYear is required")]
-        public DateOnly LaunchYear { get; set; }
+        
 
         [BsonElement("enginetype")]
         [Required(ErrorMessage = "EngineType is required")]
